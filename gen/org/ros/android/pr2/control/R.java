@@ -43,21 +43,25 @@ public final class R {
         public static final int zoom_out_pressed=0x7f02001d;
     }
     public static final class id {
-        public static final int imageView=0x7f060003;
-        public static final int joystick=0x7f060001;
-        public static final int linearLayout1=0x7f060005;
-        public static final int master_chooser_cancel=0x7f060008;
-        public static final int master_chooser_ok=0x7f060006;
-        public static final int master_chooser_qr_code_button=0x7f060007;
-        public static final int master_chooser_uri=0x7f060004;
-        public static final int toggle_body_part=0x7f060002;
-        public static final int topView=0x7f060000;
-        public static final int virtual_joystick_properties=0x7f060009;
-        public static final int virtual_joystick_snap=0x7f06000a;
+        public static final int TextViewX=0x7f060001;
+        public static final int TextViewY=0x7f060002;
+        public static final int imageView=0x7f060006;
+        public static final int joystick=0x7f060004;
+        public static final int joystickView=0x7f060000;
+        public static final int linearLayout1=0x7f060008;
+        public static final int master_chooser_cancel=0x7f06000b;
+        public static final int master_chooser_ok=0x7f060009;
+        public static final int master_chooser_qr_code_button=0x7f06000a;
+        public static final int master_chooser_uri=0x7f060007;
+        public static final int toggle_body_part=0x7f060005;
+        public static final int topView=0x7f060003;
+        public static final int virtual_joystick_properties=0x7f06000c;
+        public static final int virtual_joystick_snap=0x7f06000d;
     }
     public static final class layout {
-        public static final int main=0x7f030000;
-        public static final int master_chooser=0x7f030001;
+        public static final int joystick=0x7f030000;
+        public static final int main=0x7f030001;
+        public static final int master_chooser=0x7f030002;
     }
     public static final class menu {
         public static final int settings_menu=0x7f050000;
