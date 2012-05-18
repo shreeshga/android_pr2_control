@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:id="@+id/topView"
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"
+     android:orientation="vertical" >
+
+<!--      <org.ros.android.pr2.control.PanZoomView -->
+<!--          android:id="@+id/panzoom" -->
+<!--          android:layout_width="wrap_content" -->
+<!--          android:layout_height="wrap_content" -->
+<!--          android:layout_toRightOf="@+id/toggleButton1" -->
+<!--          android:src="@drawable/icon" > -->
+
+<!--      </org.ros.android.pr2.control.PanZoomView> -->
+
+     <org.ros.android.pr2.control.JoystickView
+         android:id="@+id/joystick"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+         android:layout_centerHorizontal="true"
+         android:src="@drawable/icon" />
+
+     <ToggleButton
+         android:id="@+id/toggle_body_part"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+         android:layout_alignParentLeft="true"
+         android:textOff="BODY"
+         android:textOn="HEAD" />
+
+     <org.ros.android.views.RosImageView
+         android:id="@+id/imageView"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/joystick"
+         android:layout_centerHorizontal="true"
+         android:src="@drawable/background" />
+
+ </RelativeLayout>
