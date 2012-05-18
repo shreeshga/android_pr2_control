@@ -10,8 +10,10 @@ import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
+import org.ros.android.views.RosImageView;
+import org.cornell.pr2.control.ROSNodeWrapper;;
 
-public class JoystickView extends View {
+public class JoystickView extends RosImageView {
 	public static final int INVALID_POINTER_ID = -1;
 	
 	// =========================================
@@ -19,6 +21,7 @@ public class JoystickView extends View {
 	// =========================================
 	private final boolean D = false;
 	String TAG = "JoystickView";
+
 	
 	private Paint dbgPaint1;
 	private Paint dbgPaint2;
@@ -132,7 +135,7 @@ public class JoystickView extends View {
 		handlePaint.setStrokeWidth(1);
 		handlePaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
-		innerPadding = 10;
+		innerPadding = 0;//10;
 		
 		setMovementRange(10);
 		setMoveResolution(1.0f);
