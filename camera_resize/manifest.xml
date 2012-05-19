@@ -1,0 +1,19 @@
+<package>
+  <description brief="camera_resize">
+
+     camera_resize
+
+  </description>
+  <author>shreeshga</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/camera_resize</url>
+  <depend package="roscpp"/>
+  <depend package="sensor_msgs"/>
+  <depend package="cv_bridge"/>
+  <depend package="std_msgs"/>
+  <depend package="image_transport"/>
+
+</package>
+
+
