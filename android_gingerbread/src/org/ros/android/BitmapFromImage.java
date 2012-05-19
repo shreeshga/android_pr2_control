@@ -29,7 +29,7 @@ public class BitmapFromImage implements MessageCallable<Bitmap, Image> {
 
   @Override
   public Bitmap call(Image message) {
-    Preconditions.checkArgument(message.encoding.equals("rgb8"));
+	  Preconditions.checkArgument(message.encoding.equals("rgb8"));
     Bitmap bitmap =
         Bitmap.createBitmap((int) message.width, (int) message.height, Bitmap.Config.ARGB_8888);
     for (int x = 0; x < message.width; x++) {

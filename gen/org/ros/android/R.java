@@ -8,62 +8,100 @@
 package org.ros.android;
 
 public final class R {
+    public static final class array {
+        public static final int context_menu=0x7f060000;
+    }
     public static final class attr {
+    }
+    public static final class color {
+        public static final int checked=0x7f050000;
     }
     public static final class drawable {
         public static final int background=0x7f020000;
         public static final int black_background=0x7f020001;
         public static final int center_widget=0x7f020002;
-        public static final int directional_arrow=0x7f020003;
-        public static final int grey_ring_notched=0x7f020004;
-        public static final int horizon_original=0x7f020005;
-        public static final int icon=0x7f020006;
-        public static final int intensity=0x7f020007;
-        public static final int large_d_widget_3=0x7f020008;
-        public static final int large_pan_marker_3=0x7f020009;
-        public static final int large_tilt_marker_3=0x7f02000a;
-        public static final int mid_angle_slice=0x7f02000b;
-        public static final int pan_tilt_controller=0x7f02000c;
-        public static final int pan_tilt_follower=0x7f02000d;
-        public static final int previous_velocity=0x7f02000e;
-        public static final int pt_bg=0x7f02000f;
-        public static final int pt_home_marker=0x7f020010;
-        public static final int rotate_left_icon=0x7f020011;
-        public static final int rotate_right_icon=0x7f020012;
-        public static final int small_d_widget_3=0x7f020013;
-        public static final int small_pan_marker_3=0x7f020014;
-        public static final int small_tilt_marker_3=0x7f020015;
-        public static final int top_angle_slice=0x7f020016;
-        public static final int zoom_bar_lit=0x7f020017;
-        public static final int zoom_bar_notlit=0x7f020018;
-        public static final int zoom_bg=0x7f020019;
-        public static final int zoom_in_normal=0x7f02001a;
-        public static final int zoom_in_pressed=0x7f02001b;
-        public static final int zoom_out_normal=0x7f02001c;
-        public static final int zoom_out_pressed=0x7f02001d;
+        public static final int checkable=0x7f020003;
+        public static final int directional_arrow=0x7f020004;
+        public static final int error_triangle=0x7f020005;
+        public static final int grey_ring_notched=0x7f020006;
+        public static final int horizon_original=0x7f020007;
+        public static final int icon=0x7f020008;
+        public static final int intensity=0x7f020009;
+        public static final int large_d_widget_3=0x7f02000a;
+        public static final int large_pan_marker_3=0x7f02000b;
+        public static final int large_tilt_marker_3=0x7f02000c;
+        public static final int mid_angle_slice=0x7f02000d;
+        public static final int pan_tilt_controller=0x7f02000e;
+        public static final int pan_tilt_follower=0x7f02000f;
+        public static final int pr2=0x7f020010;
+        public static final int previous_velocity=0x7f020011;
+        public static final int pt_bg=0x7f020012;
+        public static final int pt_home_marker=0x7f020013;
+        public static final int qrcode=0x7f020014;
+        public static final int question_mark=0x7f020015;
+        public static final int rotate_left_icon=0x7f020016;
+        public static final int rotate_right_icon=0x7f020017;
+        public static final int small_d_widget_3=0x7f020018;
+        public static final int small_pan_marker_3=0x7f020019;
+        public static final int small_tilt_marker_3=0x7f02001a;
+        public static final int status=0x7f02001b;
+        public static final int top_angle_slice=0x7f02001c;
+        public static final int turtlebot=0x7f02001d;
+        public static final int wifi_question_mark=0x7f02001e;
+        public static final int zoom_bar_lit=0x7f02001f;
+        public static final int zoom_bar_notlit=0x7f020020;
+        public static final int zoom_bg=0x7f020021;
+        public static final int zoom_in_normal=0x7f020022;
+        public static final int zoom_in_pressed=0x7f020023;
+        public static final int zoom_out_normal=0x7f020024;
+        public static final int zoom_out_pressed=0x7f020025;
     }
     public static final class id {
-        public static final int TextViewX=0x7f060001;
-        public static final int TextViewY=0x7f060002;
-        public static final int imageView=0x7f060005;
-        public static final int joystickView=0x7f060000;
-        public static final int linearLayout1=0x7f060007;
-        public static final int master_chooser_cancel=0x7f06000a;
-        public static final int master_chooser_ok=0x7f060008;
-        public static final int master_chooser_qr_code_button=0x7f060009;
-        public static final int master_chooser_uri=0x7f060006;
-        public static final int toggle_body_part=0x7f060004;
-        public static final int topView=0x7f060003;
-        public static final int virtual_joystick_properties=0x7f06000b;
-        public static final int virtual_joystick_snap=0x7f06000c;
+        public static final int RelativeLayout01=0x7f080000;
+        public static final int TextViewX=0x7f08000d;
+        public static final int TextViewY=0x7f08000e;
+        public static final int cancel_button=0x7f080006;
+        public static final int control_uri_editor=0x7f080003;
+        public static final int enable_button=0x7f08000b;
+        public static final int enter_button=0x7f080001;
+        public static final int error_icon=0x7f080018;
+        public static final int imageView=0x7f080011;
+        public static final int joystickView=0x7f08000c;
+        public static final int linearLayout1=0x7f080013;
+        public static final int main_text=0x7f080008;
+        public static final int master_chooser_cancel=0x7f080016;
+        public static final int master_chooser_ok=0x7f080014;
+        public static final int master_chooser_qr_code_button=0x7f080015;
+        public static final int master_chooser_uri=0x7f080012;
+        public static final int master_list=0x7f080007;
+        public static final int name=0x7f08001a;
+        public static final int ok_button=0x7f08000a;
+        public static final int progress_circle=0x7f080017;
+        public static final int robot_icon=0x7f080019;
+        public static final int status=0x7f08001c;
+        public static final int sub_text=0x7f080009;
+        public static final int toggle_body_part=0x7f080010;
+        public static final int topView=0x7f08000f;
+        public static final int uri=0x7f08001b;
+        public static final int uri_editor=0x7f080002;
+        public static final int virtual_joystick_properties=0x7f08001d;
+        public static final int virtual_joystick_snap=0x7f08001e;
+        public static final int wifi_name_editor=0x7f080004;
+        public static final int wifi_password_editor=0x7f080005;
     }
     public static final class layout {
-        public static final int joystick=0x7f030000;
-        public static final int main=0x7f030001;
-        public static final int master_chooser=0x7f030002;
+        public static final int add_uri_dialog=0x7f030000;
+        public static final int advanced_master_chooser=0x7f030001;
+        public static final int broken_wireless_disabled_dialog=0x7f030002;
+        public static final int joystick=0x7f030003;
+        public static final int main=0x7f030004;
+        public static final int master_chooser=0x7f030005;
+        public static final int master_item=0x7f030006;
+        public static final int wireless_disabled_dialog=0x7f030007;
+        public static final int wireless_enabled_but_not_connected_dialog=0x7f030008;
     }
     public static final class menu {
-        public static final int settings_menu=0x7f050000;
+        public static final int settings_menu=0x7f070000;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
@@ -71,5 +109,6 @@ public final class R {
         public static final int master_uri_hint=0x7f040004;
         public static final int ok=0x7f040001;
         public static final int qr_code=0x7f040003;
+        public static final int uri_not_set_toast=0x7f040005;
     }
 }

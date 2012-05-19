@@ -14,7 +14,7 @@
     android:label="@string/app_name">
     <activity
       android:label="@string/app_name"
-      android:name="MasterChooser"
+      android:name="RobotSelecterActivity"
       android:launchMode="singleTask" />
     <service android:name="NodeRunnerService">
       <intent-filter>

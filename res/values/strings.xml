@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">PR2 Control</string>
+
+    <string name="app_name">PR2 Control</string>
+    <string name="uri_not_set_toast">Select a master URI before continuing.</string>
+
+    <string-array name="context_menu">
+        <item>Select Robot</item>
+        <item>Delete Robot</item>
+    </string-array>
+
 </resources>

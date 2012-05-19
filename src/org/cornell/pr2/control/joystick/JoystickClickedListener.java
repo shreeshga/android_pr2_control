@@ -1,6 +1,14 @@
 package org.cornell.pr2.control.joystick;
 
-public interface JoystickClickedListener {
-	public void OnClicked();
-	public void OnReleased();
+import android.util.Log;
+
+public class JoystickClickedListener {
+	public void OnClicked() {
+		Log.i("touch listener", "on click");
+;
+	}
+	public void OnReleased() {
+		Log.i("move listener", "on release");
+		
+	}
 }

@@ -11,7 +11,6 @@ import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 import org.ros.android.views.RosImageView;
-import org.cornell.pr2.control.ROSNodeWrapper;;
 
 public class JoystickView extends RosImageView {
 	public static final int INVALID_POINTER_ID = -1;
@@ -428,7 +427,7 @@ public class JoystickView extends RosImageView {
 				this.reportX = touchX;
 				this.reportY = touchY;
 				
-//				Log.d(TAG, String.format("moveListener.OnMoved(%d,%d)", (int)userX, (int)userY));
+				Log.d(TAG, String.format("moveListener.OnMoved(%d,%d)", (int)userX, (int)userY));
 				moveListener.OnMoved(userX, userY);
 			}
 		}

@@ -42,5 +42,6 @@
 	<classpathentry kind="lib" path="libs/vecmath.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="lib" path="/home/sa736/.ros/rosjava/lib/org.ros.rosjava.trajectory_msgs-0.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/snakeyaml-android-1.8-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

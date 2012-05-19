@@ -51,10 +51,7 @@ import org.ros.node.topic.Publisher;
 import org.ros.message.Message;
 
 public class PR2Control {
-
-	private Twist touchCmdMessage;
-	private JointTrajectory touchTrajMessage;
-
+	ROSNodeWrapper currentNode;
 	public static final double maxHeadPan = 2.7;
 	public static final double maxHeadTilt = 1.4;
 	public static final double minHeadTilt = -0.4;
@@ -62,17 +59,12 @@ public class PR2Control {
 	public static final double headPanDiff = 1.2;
 	public static final String TAG = "JoyStickView";
 
-	private float motionY;
-	private float motionX;
+
 	private Common.BODY_PART movePart;
-	private ROSNodeWrapper rosNode;
 
-	private void init(Context context) {
-
-		touchCmdMessage = new Twist();
-		touchTrajMessage = new JointTrajectory();
+	public PR2Control(ROSNodeWrapper node) {
+		currentNode = node;
 		movePart = Common.BODY_PART.BODY;
-
 	}
 
 	public void setActiveBodyPart(Common.BODY_PART var) {
@@ -83,72 +75,123 @@ public class PR2Control {
 		return movePart;
 	}
 
-	public void updateMessage(View arg0, int action, MotionEvent motionEvent) {
-		if ((action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE)) {
-			motionX = (motionEvent.getX() - (arg0.getWidth() / 2))
-					/ (arg0.getWidth());
-			motionY = (motionEvent.getY() - (arg0.getHeight() / 2))
-					/ (arg0.getHeight());
-			if (movePart == Common.BODY_PART.BODY) {
+	public void sendHeadMessage(int pan, int tilt) {
+		JointTrajectory touchTrajMessage = currentNode.getTouchTrajMessage();
+		JointTrajectoryPoint p = new JointTrajectoryPoint();
+		p.positions = new double[2];
+		p.velocities = new double[2];
+		double val = Math.max(maxHeadPan, tilt);
+		p.positions[0] = val;
+		p.velocities[0] = 0.0;
 
-				touchCmdMessage.linear.x = -2 * motionY;
-				touchCmdMessage.linear.y = 0;
-				touchCmdMessage.linear.z = 0;
-				touchCmdMessage.angular.x = 0;
-				touchCmdMessage.angular.y = 0;
-				touchCmdMessage.angular.z = -5 * motionX;
-				rosNode.setSendMessage(true);
-				rosNode.setNullMessage(false);
-				Log.i(TAG, "Moving Body z =" + touchCmdMessage.angular.z
-						+ " x =" + touchCmdMessage.linear.x);
-			} else {
-				JointTrajectoryPoint p = new JointTrajectoryPoint();
-				p.positions = new double[2];
-				p.velocities = new double[2];
-				double val = Math.max(maxHeadPan, motionX);
-				p.positions[0] = val;
-				p.velocities[0] = 0.0;
+		val = Math.min(maxHeadTilt, pan);
+		val = Math.max(minHeadTilt, val);
+		p.positions[1] = val;
+		p.velocities[1] = 0.0;
 
-				val = Math.min(maxHeadTilt, motionY);
-				val = Math.max(minHeadTilt, val);
-				p.positions[0] = val;
-				p.velocities[0] = 0.0;
+		touchTrajMessage.joint_names = new ArrayList<String>(2);
+		touchTrajMessage.joint_names.add("head_pan_joint");
+		touchTrajMessage.joint_names.add("head_tilt_joint");
 
-				touchTrajMessage.joint_names = new ArrayList<String>(2);
-				touchTrajMessage.joint_names.add("head_pan_joint");
-				touchTrajMessage.joint_names.add("head_tilt_joint");
+		touchTrajMessage.points = new ArrayList<JointTrajectoryPoint>(1);
+		touchTrajMessage.points.add(p);
+		Log.i(TAG, "Moving Head val=" + val);
+	}
 
-				touchTrajMessage.points = new ArrayList<JointTrajectoryPoint>(1);
-				touchTrajMessage.points.add(p);
-				Log.i(TAG, "Moving Head val=" + val);
+	public void sendBodyMessage(int pan, int tilt) {
+		Twist touchCmdMessage = currentNode.getTouchCmdMessage();
+		
+		touchCmdMessage.linear.x = tilt * -0.8;
+		touchCmdMessage.linear.y = 0;
+		touchCmdMessage.linear.z = 0;
+		touchCmdMessage.angular.x = 0;
+		touchCmdMessage.angular.y = 0;
+		touchCmdMessage.angular.z = pan * -0.8;
+		Log.i(TAG, "Moving Body z =" + touchCmdMessage.angular.z + " x ="
+				+ touchCmdMessage.linear.x);
+	}
 
-			}
-		} else {
-			Log.i(TAG, "Not Moving");
-			touchCmdMessage.linear.x = 0;
-			touchCmdMessage.linear.y = 0;
-			touchCmdMessage.linear.z = 0;
-			touchCmdMessage.angular.x = 0;
-			touchCmdMessage.angular.y = 0;
-			touchCmdMessage.angular.z = 0;
-			rosNode.setNullMessage(true);
-
-			JointTrajectoryPoint p = new JointTrajectoryPoint();
-			p.positions = new double[2];
-			p.positions[0] = 0.0;
-			p.velocities = new double[2];
-			p.velocities[0] = 0.0;
-
-			p.positions[0] = 0.0;
-			p.velocities[0] = 0.0;
-
-			touchTrajMessage.joint_names.add("head_pan_joint");
-			touchTrajMessage.joint_names.add("head_tilt_joint");
-
-			touchTrajMessage.points = new ArrayList<JointTrajectoryPoint>(1);
-			touchTrajMessage.points.add(p);
-
+	public void sendMessage(int pan, int tilt) {
+		switch (movePart) {
+		case BODY:
+			sendBodyMessage(pan, tilt);
+			break;
+		case HEAD:
+			sendHeadMessage(pan, tilt);
+			break;
+		default:
+			Log.e(TAG, "Not Implemented yet");
+			break;
 		}
 	}
+	// public void updateMessage(View arg0, int action, MotionEvent motionEvent)
+	// {
+	// if ((action == MotionEvent.ACTION_DOWN || action ==
+	// MotionEvent.ACTION_MOVE)) {
+	// motionX = (motionEvent.getX() - (arg0.getWidth() / 2))
+	// / (arg0.getWidth());
+	// motionY = (motionEvent.getY() - (arg0.getHeight() / 2))
+	// / (arg0.getHeight());
+	// if (movePart == Common.BODY_PART.BODY) {
+	//
+	// touchCmdMessage.linear.x = -2 * motionY;
+	// touchCmdMessage.linear.y = 0;
+	// touchCmdMessage.linear.z = 0;
+	// touchCmdMessage.angular.x = 0;
+	// touchCmdMessage.angular.y = 0;
+	// touchCmdMessage.angular.z = -5 * motionX;
+	// rosNode.setSendMessage(true);
+	// rosNode.setNullMessage(false);
+	// Log.i(TAG, "Moving Body z =" + touchCmdMessage.angular.z
+	// + " x =" + touchCmdMessage.linear.x);
+	// } else {
+	// JointTrajectoryPoint p = new JointTrajectoryPoint();
+	// p.positions = new double[2];
+	// p.velocities = new double[2];
+	// double val = Math.max(maxHeadPan, motionX);
+	// p.positions[0] = val;
+	// p.velocities[0] = 0.0;
+	//
+	// val = Math.min(maxHeadTilt, motionY);
+	// val = Math.max(minHeadTilt, val);
+	// p.positions[0] = val;
+	// p.velocities[0] = 0.0;
+	//
+	// touchTrajMessage.joint_names = new ArrayList<String>(2);
+	// touchTrajMessage.joint_names.add("head_pan_joint");
+	// touchTrajMessage.joint_names.add("head_tilt_joint");
+	//
+	// touchTrajMessage.points = new ArrayList<JointTrajectoryPoint>(1);
+	// touchTrajMessage.points.add(p);
+	// Log.i(TAG, "Moving Head val=" + val);
+	//
+	// }
+	// } else {
+	// Log.i(TAG, "Not Moving");
+	// touchCmdMessage.linear.x = 0;
+	// touchCmdMessage.linear.y = 0;
+	// touchCmdMessage.linear.z = 0;
+	// touchCmdMessage.angular.x = 0;
+	// touchCmdMessage.angular.y = 0;
+	// touchCmdMessage.angular.z = 0;
+	// rosNode.setNullMessage(true);
+	//
+	// JointTrajectoryPoint p = new JointTrajectoryPoint();
+	// p.positions = new double[2];
+	// p.positions[0] = 0.0;
+	// p.velocities = new double[2];
+	// p.velocities[0] = 0.0;
+	//
+	// p.positions[0] = 0.0;
+	// p.velocities[0] = 0.0;
+	//
+	// touchTrajMessage.joint_names.add("head_pan_joint");
+	// touchTrajMessage.joint_names.add("head_tilt_joint");
+	//
+	// touchTrajMessage.points = new ArrayList<JointTrajectoryPoint>(1);
+	// touchTrajMessage.points.add(p);
+	//
+	// }
+	// }
 
 }

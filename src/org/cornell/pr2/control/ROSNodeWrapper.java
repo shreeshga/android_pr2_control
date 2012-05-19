@@ -17,8 +17,8 @@ public class ROSNodeWrapper implements NodeMain {
 	public static final String headPanTopic = "head_pan_joint";
 	public static final String headControlTopic = "head_traj_controller/command";
 
-	private Twist touchCmdMessage;
-	private JointTrajectory touchTrajMessage;
+	private static Twist touchCmdMessage = new Twist();
+	private static JointTrajectory touchTrajMessage = new JointTrajectory();
 	private boolean sendMessages = true;
 	private boolean nullMessage = true;
 	private Publisher<Twist> twistPub;
@@ -26,7 +26,14 @@ public class ROSNodeWrapper implements NodeMain {
 
 	private Thread pubThread;
 
-	
+	public Twist getTouchCmdMessage() {
+		return touchCmdMessage;
+	}
+
+	public JointTrajectory getTouchTrajMessage() {
+		return touchTrajMessage;
+	}
+
 	public void setSendMessage(boolean flag) {
 		sendMessages = flag;
 	}
@@ -55,14 +62,14 @@ public class ROSNodeWrapper implements NodeMain {
 			public void run() {
 				try {
 					while (true) {
-						if (sendMessages) {
-							Log.i("JoystickView", "send joystick message");
+						if (/*sendMessages*/true) {
+//							Log.i("JoystickView", "send joystick message");
 							pub.publish(message);
 							if (nullMessage) {
 								sendMessages = false;
 							}
 						} else {
-							// Log.i("JoystickView", "skipping joystick");
+//							Log.i("JoystickView", "skipping joystick");
 						}
 						Thread.sleep(1000 / rate);
 					}
@@ -83,10 +90,10 @@ public class ROSNodeWrapper implements NodeMain {
 	public void onStart(Node node) {
 		Log.i("JoystickView", "init twistPub");
 		twistPub = node.newPublisher(baseControlTopic, "geometry_msgs/Twist");
-		createPublisherThread(twistPub, touchCmdMessage, 10);
+		createPublisherThread(twistPub, touchCmdMessage, 1);
 		jointPub = node.newPublisher(headControlTopic,
 				"trajectory_msgs/JointTrajectory");
-		createPublisherThread(jointPub, touchTrajMessage, 10);
+		createPublisherThread(jointPub, touchTrajMessage, 1);
 	}
 
 	public void startBaseControllerNode(Node node) throws RosException {
