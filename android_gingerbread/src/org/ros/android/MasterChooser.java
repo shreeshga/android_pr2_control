@@ -51,7 +51,7 @@ public class MasterChooser extends Activity {
    * The key with which the last used uri will be stored as a preference.
    */
   private static final String PREFS_KEY_NAME = "URI_KEY";
-  private static final String DEFAULT_MASTER_URI = "http://128.84.62.204:11311";
+  private static final String DEFAULT_MASTER_URI = "http://128.84.69.218:11311";
   /**
    * Package name of the QR code reader used to scan QR codes.
    */

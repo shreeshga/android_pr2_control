@@ -98,26 +98,42 @@ public class PR2Control {
 		Log.i(TAG, "Moving Head val=" + val);
 	}
 
-	public void sendBodyMessage(int pan, int tilt) {
+
+	public void sendBodyTurnMessage(int vSlide, int hSlide) {
 		Twist touchCmdMessage = currentNode.getTouchCmdMessage();
 		
-		touchCmdMessage.linear.x = tilt * -0.8;
+		touchCmdMessage.linear.x = 0;
 		touchCmdMessage.linear.y = 0;
 		touchCmdMessage.linear.z = 0;
 		touchCmdMessage.angular.x = 0;
 		touchCmdMessage.angular.y = 0;
-		touchCmdMessage.angular.z = pan * -0.8;
-		Log.i(TAG, "Moving Body z =" + touchCmdMessage.angular.z + " x ="
-				+ touchCmdMessage.linear.x);
+		touchCmdMessage.angular.z = vSlide * -0.8;
 	}
 
-	public void sendMessage(int pan, int tilt) {
+	public void sendBodyStrafeMessage(int vSlide, int hSlide) {
+		Twist touchCmdMessage = currentNode.getTouchCmdMessage();
+		
+		touchCmdMessage.linear.x = hSlide * -0.8;
+		touchCmdMessage.linear.y = vSlide * -0.8;
+		touchCmdMessage.linear.z = 0;
+		touchCmdMessage.angular.x = 0;
+		touchCmdMessage.angular.y = 0;
+		touchCmdMessage.angular.z = 0;
+//		Log.i(TAG, "Moving Body z =" + touchCmdMessage.angular.z + " x ="
+//				+ touchCmdMessage.linear.x);
+	}
+
+	public void sendMessage(String stringID,int vSlide, int hSlide) {
 		switch (movePart) {
 		case BODY:
-			sendBodyMessage(pan, tilt);
+			if(stringID.equalsIgnoreCase("R"))
+				sendBodyStrafeMessage(vSlide, hSlide);
+			else if(stringID.equalsIgnoreCase("L"))
+				sendBodyTurnMessage(vSlide, hSlide);			
 			break;
 		case HEAD:
-			sendHeadMessage(pan, tilt);
+			if(stringID.equalsIgnoreCase("R"))
+				sendHeadMessage(vSlide, hSlide);
 			break;
 		default:
 			Log.e(TAG, "Not Implemented yet");

@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Currency;
 
 import org.cornell.pr2.control.Common;
+import org.cornell.pr2.control.joystick.DualJoystickView;
 import org.cornell.pr2.control.joystick.JoystickView;
 import org.cornell.pr2.control.joystick.Pr2JoystickMovedListener;
 import org.ros.address.InetAddressFactory;
@@ -40,14 +41,16 @@ import org.cornell.pr2.control.R;
  * @author pratkanis@willowgarage.com (Tony Pratkanis)
  */
 public class MainActivity extends RosActivity {
-//	public static final String imageTopic = "/wide_stereo/left/image_color/compressed";
-	public static final String imageTopic = "/wide_stereo/resize_compressed";
+	public static final String imageTopic = "/wide_stereo/left/image_color/compressed";
+//	public static final String imageTopic = "/wide_stereo/resize_compressed";
 
 	public static final String imageMessage = "sensor_msgs/CompressedImage";
 
 	private RosImageView<CompressedImage> rosImageView;
-	private JoystickView joystickView;
-	Pr2JoystickMovedListener listener;
+	private DualJoystickView joystickView;
+	Pr2JoystickMovedListener listenerLeft;
+	Pr2JoystickMovedListener listenerRight;
+
 	PR2Control pr2Controller;
 	ROSNodeWrapper rosNode;
 	private ToggleButton togglePart;
@@ -65,17 +68,18 @@ public class MainActivity extends RosActivity {
 		rosNode = new ROSNodeWrapper();
 		
 		pr2Controller = new PR2Control(rosNode);
-		listener = new Pr2JoystickMovedListener(this);
-
+		listenerLeft = new Pr2JoystickMovedListener(this,new String("L"));
+		listenerRight = new Pr2JoystickMovedListener(this,new String("R"));
+		
 		rosImageView = (RosImageView<CompressedImage>) findViewById(R.id.imageView);
 		rosImageView.setTopicName(imageTopic);
 		rosImageView.setMessageType(imageMessage);
 		rosImageView
 				.setMessageToBitmapCallable(new BitmapFromCompressedImage());
 
-		joystickView = (JoystickView) findViewById(R.id.joystickView);
-		joystickView.bringToFront();
-		joystickView.setOnJostickMovedListener(listener);
+		joystickView = (DualJoystickView) findViewById(R.id.dualjoystickView);
+//		joystickView.bringToFront();
+		joystickView.setOnJostickMovedListener(listenerLeft, listenerRight);
 		togglePart = (ToggleButton) findViewById(R.id.toggle_body_part);
 		togglePart.setOnClickListener(new OnClickListener() {
 			@Override
@@ -124,7 +128,7 @@ public class MainActivity extends RosActivity {
 		pr2Controller.setActiveBodyPart(activebodyPart);
 	}
 	
-	public void sendJoystickEvent(int pan,int tilt) {
-		pr2Controller.sendMessage(pan, tilt);
+	public void sendJoystickEvent(String stringID,int pan,int tilt) {
+		pr2Controller.sendMessage(stringID,pan, tilt);
 	}
 }

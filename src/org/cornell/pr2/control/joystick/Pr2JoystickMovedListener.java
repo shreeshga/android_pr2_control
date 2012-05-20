@@ -10,24 +10,28 @@ import android.view.View;
 
 public class Pr2JoystickMovedListener implements JoystickMovedListener {
 	MainActivity currentActivity;
-
-	public Pr2JoystickMovedListener(MainActivity activity) {
+	String TAG;
+	
+	public Pr2JoystickMovedListener(MainActivity activity,String stringID) {
 		currentActivity = activity;
+		TAG = stringID;
 	}
 
 	@Override
-	public void OnMoved(int pan, int tilt) {
-		Log.i("PR2JoyStick", "Pan " + pan + " Tilt " + tilt);
-		currentActivity.sendJoystickEvent(pan, tilt);
+	public void OnMoved(int vSlide, int hSlide) {
+//		Log.i("PR2JoyStick", "Pan " + vSlide + " Tilt " + hSlide);
+		currentActivity.sendJoystickEvent(TAG,vSlide, hSlide);
 	}
 
 	@Override
 	public void OnReleased() {
+		Log.i("move listener", "on release");
 
 	}
 
 	@Override
 	public void OnReturnedToCenter() {
+		Log.i("move listener", "on center");
 
 	}
 
@@ -35,7 +39,7 @@ public class Pr2JoystickMovedListener implements JoystickMovedListener {
 	public boolean onTouch(View arg0, MotionEvent motionEvent) {
 		// int action = motionEvent.getAction();
 		// pr2Controller.updateMessage(arg0,action,motionEvent);
-		Log.i("move listener", "on touch");
+//		Log.i("move listener", "on touch");
 		return true;
 	}
 }
