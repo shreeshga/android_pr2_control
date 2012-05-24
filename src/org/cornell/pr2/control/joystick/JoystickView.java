@@ -223,20 +223,20 @@ public class JoystickView extends RosImageView {
 		return moveResolution;
 	}
 
-	private Thread thread = new Thread() {
-		@Override
-		public void run() {
-			try {
-				while (true) {
-					sleep(800);
-					if (timerRunning == true)
-						mHandler.post(mSendTouchTask);
-				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	};
+	// private Thread thread = new Thread() {
+	// @Override
+	// public void run() {
+	// try {
+	// while (true) {
+	// sleep(800);
+	// if (timerRunning == true)
+	// mHandler.post(mSendTouchTask);
+	// }
+	// } catch (InterruptedException e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// };
 
 	private volatile Thread runner;
 
@@ -246,13 +246,14 @@ public class JoystickView extends RosImageView {
 				public void run() {
 					while (Thread.currentThread() == runner) {
 						try {
-							sleep(800);
+							sleep(1000);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						if (timerRunning == true)
-							mHandler.post(mSendTouchTask);
+						// if (timerRunning == true)
+						moveListener.OnMoved(userX, userY);
+						// mHandler.post(mSendTouchTask);
 					}
 				}
 			};
@@ -273,10 +274,7 @@ public class JoystickView extends RosImageView {
 	private Runnable mSendTouchTask = new Runnable() {
 		public void run() {
 			Log.i("", "Timer Running");
-			
-			// mHandler.postAtTime(this, 200);
 			moveListener.OnMoved(userX, userY);
-//			invalidate();
 		}
 	};
 
@@ -401,6 +399,8 @@ public class JoystickView extends RosImageView {
 	}
 
 	public void timedMessages(boolean flag) {
+		timerRunning = flag;
+
 		if (flag == true) {
 			Log.i("", "Start Timer");
 			startThread();
@@ -411,7 +411,6 @@ public class JoystickView extends RosImageView {
 			Log.i("", "Stopping Timer");
 			stopThread();
 		}
-		timerRunning = flag;
 	}
 
 	public void setPointerId(int id) {
@@ -427,16 +426,17 @@ public class JoystickView extends RosImageView {
 		final int action = ev.getAction();
 		switch (action & MotionEvent.ACTION_MASK) {
 		case MotionEvent.ACTION_MOVE: {
+			Log.d(TAG, "ACTION_MOVE " + pointerId);
 			return processMoveEvent(ev);
 		}
 		case MotionEvent.ACTION_CANCEL:
 		case MotionEvent.ACTION_UP: {
+			Log.d(TAG, "ACTION_UP OUTSIDE " + pointerId);
 			if (pointerId != INVALID_POINTER_ID) {
-				timedMessages(false);
-
-				Log.d(TAG, "ACTION_UP");
+				Log.d(TAG, "ACTION_UP " + pointerId);
 				returnHandleToCenter();
 				setPointerId(INVALID_POINTER_ID);
+				timedMessages(false);
 			}
 			break;
 		}
@@ -448,6 +448,7 @@ public class JoystickView extends RosImageView {
 					Log.d(TAG, "ACTION_POINTER_UP: " + pointerId);
 					returnHandleToCenter();
 					setPointerId(INVALID_POINTER_ID);
+					timedMessages(false);
 					return true;
 				}
 			}
@@ -473,6 +474,8 @@ public class JoystickView extends RosImageView {
 				if (x >= offsetX && x < offsetX + dimX) {
 					Log.d(TAG, "ACTION_POINTER_DOWN: " + pointerId);
 					setPointerId(pointerId);
+					timedMessages(true);
+
 					return true;
 				}
 			}
@@ -485,23 +488,18 @@ public class JoystickView extends RosImageView {
 	private boolean processMoveEvent(MotionEvent ev) {
 		if (pointerId != INVALID_POINTER_ID) {
 			final int pointerIndex = ev.findPointerIndex(pointerId);
-
 			// Translate touch position to center of view
 			float x = ev.getX(pointerIndex);
 			touchX = x - cX - offsetX;
 			float y = ev.getY(pointerIndex);
 			touchY = y - cY - offsetY;
-
-			// Log.d(TAG,
-			// String.format("ACTION_MOVE: (%03.0f, %03.0f) => (%03.0f, %03.0f)",
-			// x, y, touchX, touchY));
-
+//			 Log.d(TAG,
+//			 String.format("ACTION_MOVE: (%03.0f, %03.0f) => (%03.0f, %03.0f)",
+//			 x, y, touchX, touchY));
 			reportOnMoved();
 			invalidate();
-
 			touchPressure = ev.getPressure(pointerIndex);
 			reportOnPressure();
-
 			return true;
 		}
 		return false;

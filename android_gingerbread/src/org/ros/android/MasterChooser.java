@@ -25,6 +25,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -51,7 +53,7 @@ public class MasterChooser extends Activity {
    * The key with which the last used uri will be stored as a preference.
    */
   private static final String PREFS_KEY_NAME = "URI_KEY";
-  private static final String DEFAULT_MASTER_URI = "http://128.84.69.218:11311";
+  private static final String DEFAULT_MASTER_URI = "http://128.84.69.16:11311";
   /**
    * Package name of the QR code reader used to scan QR codes.
    */
@@ -64,6 +66,7 @@ public class MasterChooser extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.master_chooser);
+   
     uriText = (EditText) findViewById(R.id.master_chooser_uri);
     // Get the URI from preferences and display it. Since only primitive types
     // can be saved in preferences the URI is stored as a string.
@@ -72,6 +75,7 @@ public class MasterChooser extends Activity {
             NodeConfiguration.DEFAULT_MASTER_URI.toString());
     //uriText.setText(masterUri);
     uriText.setText(DEFAULT_MASTER_URI);
+    checkConnectivity();
   }
 
   @Override
@@ -136,6 +140,23 @@ public class MasterChooser extends Activity {
     finish();
   }
 
+  
+	protected boolean checkConnectivity() {
+		ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+		NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+		if (mWifi.isConnected() == false) {
+			runOnUiThread(new Runnable() {
+			    public void run() {
+					Toast.makeText(MasterChooser.this, "Please turn on WIFI",
+							Toast.LENGTH_LONG).show(); 
+			    }
+			});
+   		
+			return false;
+		}
+		return true;
+	}
   /**
    * Check if the specified app is installed.
    * 

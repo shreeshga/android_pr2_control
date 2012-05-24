@@ -12,6 +12,9 @@ import org.ros.android.BitmapFromCompressedImage;
 import org.ros.android.RosActivity;
 
 import org.ros.android.views.RosImageView;
+
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import org.ros.android.BitmapFromImage;
 import org.ros.exception.RosException;
@@ -84,15 +87,32 @@ public class MainActivity extends RosActivity {
 		togglePart.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
 				Log.i("JoystickView", "Text " + togglePart.getText());
 				toggleBodyPart();
 			}
 		});
 	}
 
+	protected boolean checkConnectivity() {
+		ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+		NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+		if (mWifi.isConnected() == false) {
+			runOnUiThread(new Runnable() {
+			    public void run() {
+					Toast.makeText(MainActivity.this, "Please turn on WIFI",
+							Toast.LENGTH_LONG).show(); 
+			    }
+			});
+   		
+			return false;
+		}
+		return true;
+	}
 	@Override
 	protected void init(NodeMainExecutor nodeMainExecutor) {
+		if(checkConnectivity() == false)
+			return;
 		try {
 			NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(
 					InetAddressFactory.newNonLoopback().getHostAddress(),
@@ -106,8 +126,13 @@ public class MainActivity extends RosActivity {
 			// nodeConfiguration.setNodeName("pr2_control/orientation_pub"));
 			// NameResolver appNamespace = getAppNamespace(super.node);
 		} catch (Exception ex) {
-//			Toast.makeText(MainActivity.this, "Failed: " + ex.getMessage(),
-//					Toast.LENGTH_LONG).show();
+			final String msg = ex.getMessage();
+			runOnUiThread(new Runnable() {
+			    public void run() {
+					Toast.makeText(MainActivity.this, "Failed: " + msg,
+							Toast.LENGTH_LONG).show();
+			    }
+			});
 		}
 
 	}
@@ -126,6 +151,10 @@ public class MainActivity extends RosActivity {
 		activebodyPart = (activebodyPart == Common.BODY_PART.BODY) ? Common.BODY_PART.HEAD
 				: Common.BODY_PART.BODY;
 		pr2Controller.setActiveBodyPart(activebodyPart);
+		final String part = activebodyPart == Common.BODY_PART.BODY ? "BODY" : "HEAD";
+		Toast.makeText(MainActivity.this, "Controlling "+part,
+				Toast.LENGTH_LONG).show();
+
 	}
 	
 	public void sendJoystickEvent(String stringID,int pan,int tilt) {
